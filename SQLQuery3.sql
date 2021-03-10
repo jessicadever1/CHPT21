@@ -14,7 +14,7 @@ WHERE GenreId = 2 OR GenreId = 4;
 
 
 --Task 6
-SELECT DISTINCT
+SELECT 
 Album.Id,
 Album.Title
 FROM Album
@@ -114,8 +114,26 @@ HAVING COUNT(DISTINCT Album.Label) > 1;
 
 --Task 15
 /*
-
+Using MAX() function, write a select statement to find the 
+album with the longest duration. The result should display 
+the album title and the duration.
 */
+SELECT 
+Album.Title,
+Album.AlbumLength
+	FROM Album
+	WHERE Album.AlbumLength = (
+	SELECT MAX(Album.AlbumLength)
+	FROM Album);
+
+--or
+
+SELECT TOP 1
+Title AS AlbumTitle,
+AlbumLength
+	FROM Album
+	ORDER BY AlbumLength DESC;
+
 
 --Task 16
 
@@ -124,8 +142,9 @@ Using MAX() function, write a select statement to find the song with the
 longest duration. The result should display the song title and the duration.
 */
 
-SELECT song.Title, song.SongLength
+SELECT song.Title, song.SongLength, Album.Title AS AlbumTitle
 FROM song
+	LEFT JOIN Album ON Song.AlbumId = Album.id
 WHERE song.SongLength = (
 	SELECT MAX(song.SongLength)
 	FROM song);
@@ -133,6 +152,12 @@ WHERE song.SongLength = (
 
 --or
 
-SELECT  TOP 1 song.Title, song.SongLength
+SELECT  TOP 1 song.Title, song.SongLength, Album.Title AS AlbumTitle
 	FROM song
+	LEFT JOIN Album ON song.AlbumId = Album.id
 	ORDER BY song.SongLength desc;
+
+--Task 17
+/*
+Modify the previous query to also display the title of the album.
+*/
